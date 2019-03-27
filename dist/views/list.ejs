@@ -1,4 +1,3 @@
-
 <div class="panel panel-default">
     <div class="panel-heading">
         <ol class="breadcrumb">
@@ -10,7 +9,7 @@
     <div class="panel-heading">
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">学生姓名</span>
-            <input type="text" class="form-control" id="studentName" placeholder="请输入学生姓名进行查询" aria-describedby="basic-addon1" style="width:200px;margin-right:10px;" value="{{keyword}}">
+            <input type="text" class="form-control" id="studentName" placeholder="请输入学生姓名进行查询" aria-describedby="basic-addon1" style="width:200px;margin-right:10px;" value="">
             <input type="button" class="btn btn-success" onclick='search()' value="查找" style="margin-right:10px;">
             <input type="button" class="btn btn-success" value="新增" onclick="window.location.href='/studentmanager/add'">
         </div>
@@ -19,6 +18,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>序号</th>
                     <th>姓名</th>
                     <th>年龄</th>
                     <th>性别</th>
@@ -29,12 +29,13 @@
             <tbody>
                 <% for(var i=0;i<list.length;i++) { %>
                       <tr>
+                        <td><%= currentPageIndex*4+i+1 %></td>
                         <td><%= list[i].name %></td>
                         <td><%= list[i].age %></td>
                         <td><%= list[i].sex %></td>
                         <td><%= list[i].phone %></td>
                         <td>
-                            <a href="/studentmanager/edit/{{this._id}}" class ="btn btn-success" >编辑</a> | 
+                            <a href="/studentmanager/edit/<%= list[i]._id %>" class ="btn btn-success" >编辑</a> | 
 
                             <input type="button" class ="btn btn-danger" onclick="del('{{this._id}}')" value="删除">
                         </td>
@@ -46,39 +47,39 @@
         <nav aria-label="Page navigation">
           <ul class="pagination">
           <!-- 上翻页 -->
-              {{#if( currentPageIndex<=0 )}}
+                <% if( currentPageIndex<=0){ %>
                 <li class="disabled">
                     <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
                 </li>
-              {{else}}
+                <% }else{ %>
                 <li>
-                    <a href="/studentmanager/list?currentPageIndex={{currentPageIndex-1}}&everyPageCount=2&keyword={{keyword}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                    <a href="/studentmanager/list?currentPageIndex=<%= currentPageIndex-1%>&everyPageCount=4&keyword=<%= keyword %>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
                 </li>
-              {{/if}}
+                <% } %>
 
             <!-- 分页的每个item -->
-                  {{#each(totalPageArray)}}
-                    {{#if( currentPageIndex===this )}}
-                        <li class="active"><a href="/studentmanager/list?currentPageIndex={{this}}&everyPageCount=2&keyword={{keyword}}">{{this+1}}</a></li>
-                    {{else}}
-                            <li><a href="/studentmanager/list?currentPageIndex={{this}}&everyPageCount=2&keyword={{keyword}}">{{this+1}}</a></li>
-                    {{/if}}
-                {{/each}}
+                <% for(var i=0;i<totalPageArray.length;i++) { %>
+                    <% if( currentPageIndex===totalPageArray[i]){ %>
+                        <li class="active"><a href="/studentmanager/list?currentPageIndex=<%= totalPageArray[i] %>&everyPageCount=4&keyword=<%= keyword %>"><%= totalPageArray[i]+1 %></a></li>
+                    <% }else{ %>
+                        <li><a href="/studentmanager/list?currentPageIndex=<%= totalPageArray[i] %>&everyPageCount=4&keyword=<%= keyword %>"><%= totalPageArray[i]+1 %></a></li>
+                    <% } %>
+                <% } %>
 
             <!-- 下翻页 -->
-            {{#if( currentPageIndex>=totalPage-1 )}}
+                    <% if( currentPageIndex>=totalPage-1){ %>
                     <li class="disabled">
                       <a href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
-            {{else}}
+                    <% }else{ %>
                     <li>
-                      <a href="/studentmanager/list?currentPageIndex={{currentPageIndex+1}}&everyPageCount=2&keyword={{keyword}}" aria-label="Next">
+                      <a href="/studentmanager/list?currentPageIndex=<%= currentPageIndex+1 %>&everyPageCount=4&keyword=<%= keyword %>" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
-            {{/if}}
+                    <% } %>
             
           </ul>
         </nav>
@@ -98,7 +99,7 @@
 
         //window.location.href="xxx"适用于整个页面刷新
         //ajax 局部刷洗
-        window.location.href='/studentmanager/list?currentPageIndex=0&everyPageCount=2&keyword='+keyword;
+        window.location.href='/studentmanager/list?currentPageIndex=0&everyPageCount=4&keyword='+keyword;
     }
 
     function del(studentId) {

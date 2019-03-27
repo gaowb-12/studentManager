@@ -26,18 +26,32 @@ exports.findOne=(collectionName,collectionCondition,callback)=>{
 }
 
 // 查询多条数据
-exports.find=(collectionName,collectionCondition,callback)=>{
+exports.find=(collectionName,collectionCondition,skipCount,limitCount,callback)=>{
     getDB((err,client)=>{
         const db=client.db("students");
         const collection = db.collection(collectionName);//获取集合
         // 查询
-        collection.find(collectionCondition).toArray((err, arrayDocs)=>{
+        collection.find(collectionCondition).skip(skipCount).limit(limitCount).toArray((err, arrayDocs)=>{
             callback(err,arrayDocs)
             client.close()
         });
     })
 }
-
+//查询符合条件的总个数
+exports.getCount = (collectionName,collectionCondition,callback)=>{
+    //1.获取到db对象
+    getDB((err,client)=>{
+        const db=client.db("students");
+        const collection = db.collection(collectionName);//获取集合
+        collection.find(collectionCondition).count((err,count)=>{
+             if (err) {
+              console.log(err)
+             }
+             callback(err,count)
+             client.close();
+        })
+    })
+}
 // 插入一条数据
 exports.insertOne=(collectionName,collectionCondition,callback)=>{
     getDB((err,client)=>{
