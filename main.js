@@ -1,18 +1,19 @@
 const express = require("express");
 const path = require("path");
 const server = express();
-const ejs = require('ejs');
+require('ejs');
 const bodyParser = require("body-parser");
 
 // 管理静态资源
 server.use(express.static("dist/statics"))
+// 处理post请求里的body，req.body能够访问
 server.use(bodyParser.urlencoded())
+
 // 定义模板引擎
 server.set('views', path.resolve(__dirname, 'dist/views'));
 server.set('view engine','ejs');
 
 server.use("/",(req,res,next)=>{
-    console.log(req.username)
     next()
 })
 
