@@ -1,4 +1,5 @@
 const path = require("path")
+var captchapng = require('captchapng');
 const database=require("../model/databaseManager")
 
 // 返回登录页面(get)
@@ -15,6 +16,18 @@ exports.handleLogin=(req,res)=>{
         }
         res.json(result);
     })
+}
+// 返回验证码
+exports.getVcode=(req,res)=>{
+    var code = parseInt(Math.random() * 9000 + 1000);//有且仅有4个数字
+    var p = new captchapng(100, 30, code);//宽100 高30 四位数字
+    p.color(0, 0, 0, 0);//底色
+    p.color(80, 80, 80, 255);//字体颜色
+    var img = p.getBase64();//转换成base64
+    var imgbase64 = new Buffer(img, 'base64');// 存放在imgbase64
+    
+    res.setHeader("Content-Type","image/png;")
+    res.end(imgbase64);
 }
 
 // 返回注册页面(get)

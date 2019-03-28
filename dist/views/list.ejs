@@ -37,7 +37,7 @@
                         <td>
                             <a href="/studentmanager/edit/<%= list[i]._id %>" class ="btn btn-success" >编辑</a> | 
 
-                            <input type="button" class ="btn btn-danger" onclick="del('{{this._id}}')" value="删除">
+                            <input type="button" class ="btn btn-danger" onclick="del('<%= list[i]._id %>','<%= currentPageIndex %>')" value="删除">
                         </td>
                       </tr>
                 <% } %>
@@ -102,18 +102,19 @@
         window.location.href='/studentmanager/list?currentPageIndex=0&everyPageCount=4&keyword='+keyword;
     }
 
-    function del(studentId) {
+    function del(studentId,currentPageIndex) {
       //提醒用户
       if(confirm("确认删除吗?")){
           //发送ajax请求
           //成功: {status:1,message:"删除成功"}
           //失败:{status:0,message:"删除失败"}
           const url = '/studentmanager/delete/'+studentId;
-          $.getJSON(url,null,function(jsObj){
+          $.post(url,function(jsObj){
               if (jsObj.status==0) {
                 alert(jsObj.message);
               }else{
-                window.location.href="/studentmanager/list?everyPageCount=2&currentPageIndex=0";
+                alert(jsObj.message);
+                window.location.href="/studentmanager/list?everyPageCount=4&currentPageIndex="+currentPageIndex;
               }
           })
       }

@@ -6,11 +6,13 @@ const accountCtr = require('../controllers/accountController')
 const accountRouter=express.Router()
 // 获取登录页面
 accountRouter.get("/login",accountCtr.getLoginPage)
-// 登录
+// 处理登录逻辑
 accountRouter.post("/login",accountCtr.handleLogin)
-// 注册
+// 获取图片验证码
+accountRouter.get("/vcode",accountCtr.getVcode)
+// 获取注册页面
 accountRouter.get("/register",accountCtr.getRegisterPage)
-// 注册
+// 处理注册逻辑
 accountRouter.post("/register",accountCtr.handleRegister)
 
 module.exports=accountRouter

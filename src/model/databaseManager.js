@@ -1,6 +1,10 @@
 const mongodb = require("mongodb");
 const mongoClient = mongodb.MongoClient;
 
+// 处理数据库id
+const ObjectId = mongodb.ObjectId
+exports.ObjectId = ObjectId
+
 const url="mongodb://localhost:27017";//数据库地址
 
 // 封装获取db对象
@@ -59,6 +63,30 @@ exports.insertOne=(collectionName,collectionCondition,callback)=>{
         const collection = db.collection(collectionName);//获取集合
         // 查询
         collection.insertOne(collectionCondition,(err, doc)=>{
+            callback(err,doc)
+            client.close()
+        });
+    })
+}
+// 修改一条数据
+exports.updateOne=(collectionName,collectionCondition,set,callback)=>{
+    getDB((err,client)=>{
+        const db=client.db("students");
+        const collection = db.collection(collectionName);//获取集合
+        // 查询
+        collection.updateOne(collectionCondition,set,(err, doc)=>{
+            callback(err,doc)
+            client.close()
+        });
+    })
+}
+// 删除数据
+exports.deleteOne=(collectionName,collectionCondition,callback)=>{
+    getDB((err,client)=>{
+        const db=client.db("students");
+        const collection = db.collection(collectionName);//获取集合
+        // 查询
+        collection.deleteOne(collectionCondition,(err, doc)=>{
             callback(err,doc)
             client.close()
         });
