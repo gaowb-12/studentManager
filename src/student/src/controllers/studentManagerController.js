@@ -108,6 +108,7 @@ exports.editStudent = (req,res)=>{
 
   //调用修改一个的方法
   databasemanager.updateOne('studentInfo',{_id:databasemanager.ObjectId(studentId)},params,(err,doc)=>{
+    res.setHeader("Content-Type","text/html;charset=utf8")
     if (doc!=null) {
       res.end("<script>window.location.href='/studentmanager/list?everyPageCount=2&currentPageIndex=0'</script>");
     }else{

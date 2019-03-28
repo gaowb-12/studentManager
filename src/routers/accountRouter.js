@@ -14,5 +14,7 @@ accountRouter.get("/vcode",accountCtr.getVcode)
 accountRouter.get("/register",accountCtr.getRegisterPage)
 // 处理注册逻辑
 accountRouter.post("/register",accountCtr.handleRegister)
+// 处理注册逻辑
+accountRouter.get("/layout",accountCtr.layout)
 
 module.exports=accountRouter

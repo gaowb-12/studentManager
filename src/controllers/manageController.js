@@ -27,13 +27,13 @@ exports.getStudentListPage=(req,res)=>{
             if(err){
                 console.log(err)
             }
-            res.render('parent', {template:"list",list: docs,keyword,totalPage,totalPageArray,currentPageIndex});
+            res.render('parent', {template:"list",list: docs,keyword,username:req.session.username,totalPage,totalPageArray,currentPageIndex});
         })
     })
 }
 // 获取新增学生页面
 exports.getAddStudentPage=(req,res)=>{
-    res.render('parent',{template:"add"})
+    res.render('parent',{template:"add",username:req.session.username})
 }
 // 增加学生信息
 exports.addStudentInfo=(req,res)=>{
@@ -53,7 +53,7 @@ exports.addStudentInfo=(req,res)=>{
 exports.getEditStudentPage=(req,res)=>{
     const _id= req.params.id
     database.findOne("studentInfos",{_id:database.ObjectId(_id)},(err,doc)=>{
-        res.render('parent',{template:"edit",studentInfo:{...doc}})
+        res.render('parent',{template:"edit",studentInfo:{...doc},username:req.session.username})
     })
 }
 // 编辑学生信息
