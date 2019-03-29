@@ -37,7 +37,6 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <%= people.join(", "); %>
                                 <!-- submit有一个默认的提交行为，不要加上 -->
                                 <!-- <button type="submit" onclick="login()"  class="btn btn-default">登录</button> -->
                                 <button onclick="login()"  class="btn btn-default">登录</button>
@@ -63,15 +62,16 @@
             var vcode = $("#vcodeId").val();
 
             //对密码进行加盐之后md5处理
-            password = $.md5(password+"QWEzxc110");
+            // password = $.md5(password+"QWEzxc110");
 
             //发送post请求
             $.post({
                 url:'/account/login',
                 data:'username='+username+"&password="+password+"&vcode="+vcode,
                 success:function(jsObj){
+                    console.log(jsObj)
                     if (jsObj.status==1) {
-                        window.location.href="/studentmanager/list?everyPageCount=2&currentPageIndex=0";
+                        window.location.href="/studentmanager/list?everyPageCount=4&currentPageIndex=0";
                     }else{
                         $("#vcodeimg").attr('src','/account/vcode?vid='+Math.random());
                         alert(jsObj.message);
