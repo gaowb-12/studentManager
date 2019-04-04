@@ -4,14 +4,18 @@ const server = express();
 require('ejs');
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const multer = require("multer");
 
 // 管理静态资源
 server.use(express.static("dist/statics"))
 // 处理post请求里的body，req.body能够访问
 server.use(bodyParser.urlencoded())
+server.use(bodyParser.raw())
+// 通过multer中间件解析上传的文件
+server.use(multer({dest:"./dist/upload"}).any())
 
 // 管理session cookie
-server.use(session({ secret: 'keyboard cat', cookie: { maxAge: 100000 }}))
+server.use(session({ secret: 'keyboard cat', cookie: { maxAge: 10000000 }}))
 
 // 定义模板引擎
 server.set('views', path.resolve(__dirname, 'dist/views'));
@@ -38,7 +42,11 @@ server.use("/account",accountRouter)
 const manageRouter = require("./src/routers/manageRouter")
 server.use("/studentmanager",manageRouter)
 
-
+server.post("/upload",(req,res)=>{
+    console.log(req.files)
+    console.log(req.body)
+    res.end("上传成功")
+})
 server.listen("1024",(err)=>{
     console.log(err)
 })

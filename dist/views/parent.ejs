@@ -14,7 +14,7 @@
     <script type="text/javascript" src="/js/jquery.min.js"></script>
 </head>
 
-<body>
+<body ondragstart="return false;">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -58,8 +58,66 @@
             </div>
         </div>
     </div>
+
+    <div>
+        <input id="input" type="file" name="file">
+        <span id="inner"></span>
+    </div>
+    <div id="upload" style="border:1px solid #000;height:200px;width:200px;">
+
+    </div>
 </body>
 <script type="text/javascript">
+
+    var input=document.getElementById("input")
+    var inner=document.getElementById("inner")
+    // 文件流上传文件
+    input.onchange=function(e){
+        var file=e.target.files[0];
+        var formdata=new FormData()
+        formdata.append("file",file)
+
+        var xhr=new XMLHttpRequest()
+        xhr.open("post","/upload",true)
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+                console.log(xhr.responseText)
+            }
+        }
+        xhr.send(formdata);
+        
+    }
+
+
+    // 禁止浏览器默认打开图片
+    document.addEventListener('drop', function (e) {
+        e.preventDefault()
+    }, false)
+    document.addEventListener('dragover', function (e) {
+        e.preventDefault()
+    }, false)
+
+    var upload=document.getElementById("upload")
+    // 拖拽上传文件
+    upload.ondragover=function(e){
+        e.preventDefault()
+    }
+    upload.ondrop=function(e){
+        console.log(e.dataTransfer)
+        var file=e.dataTransfer.files[0];
+        var formdata=new FormData()
+        formdata.append("file",file)
+
+        var xhr=new XMLHttpRequest()
+        xhr.open("post","/upload",true)
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+                console.log(xhr.responseText)
+            }
+        }
+        xhr.send(formdata);
+    }
+
     function logout() {
         if(confirm("确认退出吗?")){
             window.location.href = "/account/layout";

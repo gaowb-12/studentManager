@@ -11,7 +11,6 @@ exports.getLoginPage=(req,res)=>{
 exports.getVcode=(req,res)=>{
     var code = parseInt(Math.random() * 9000 + 1000);//有且仅有4个数字
     req.session.vcode=code;
-    console.log(req.session.vcode) 
     var p = new captchapng(100, 30, code);//宽100 高30 四位数字
     p.color(0, 0, 0, 0);//底色
     p.color(80, 80, 80, 255);//字体颜色
@@ -24,7 +23,6 @@ exports.getVcode=(req,res)=>{
 // 处理登录页面逻辑(post)
 exports.handleLogin=(req,res)=>{
     const result = {status:1,message:"登录成功"}
-    console.log(req.session.vcode)
     if(req.body.vcode!=req.session.vcode){
         result.status = 2;
         result.message = "验证码错误"
